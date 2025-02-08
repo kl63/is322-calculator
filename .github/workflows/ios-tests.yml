@@ -10,7 +10,7 @@ on:
 
 jobs:
   test:
-    runs-on: macos-14  # Use macOS 14 to ensure latest Xcode is available
+    runs-on: macos-14  # Ensure latest macOS version is used
 
     steps:
       - name: Checkout Repository
@@ -24,20 +24,23 @@ jobs:
           sudo xcode-select --switch /Applications/Xcode_15.4.app/Contents/Developer
           xcodebuild -version
 
+      - name: List Available iOS Simulators
+        run: xcrun simctl list devices
+
       - name: Build the App
         run: |
           xcodebuild clean build -project CalculatorApp.xcodeproj \
             -scheme CalculatorApp \
-            -destination "platform=iOS Simulator,name=iPhone 15 Pro,OS=latest"
+            -destination "platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0"
 
       - name: Run Unit Tests
         run: |
           xcodebuild test -project CalculatorApp.xcodeproj \
             -scheme CalculatorApp \
-            -destination "platform=iOS Simulator,name=iPhone 15 Pro,OS=latest"
+            -destination "platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0"
 
       - name: Run UI Tests
         run: |
           xcodebuild test -project CalculatorApp.xcodeproj \
             -scheme CalculatorAppUITests \
-            -destination "platform=iOS Simulator,name=iPhone 15 Pro,OS=latest"
+            -destination "platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0"
